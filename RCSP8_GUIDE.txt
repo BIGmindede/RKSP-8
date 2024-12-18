@@ -1,0 +1,44 @@
+docker build -t sentmentl/delivery-service:latest .\services\delivery-service
+docker push sentmentl/delivery-service:latest
+docker build -t sentmentl/user-service:latest .\services\user-service
+docker push sentmentl/user-service:latest
+docker build -t sentmentl/sushi-service:latest .\services\sushi-service
+docker push sentmentl/sushi-service:latest
+docker build -t sentmentl/api-gateway:latest .\services\api-gateway
+docker push sentmentl/api-gateway:latest
+docker build -t sentmentl/config-server:latest .\services\config-server
+docker push sentmentl/config-server:latest
+docker build -t sentmentl/load-balancer:latest .\services\load-balancer
+docker push sentmentl/load-balancer:latest
+docker build -t sentmentl/service-discovery:latest .\services\service-discovery
+docker push sentmentl/service-discovery:latest
+
+-----------------------
+minikube start --memory=3600
+
+kubectl apply -f ./deployment/service-discovery-deployment.yaml
+kubectl apply -f ./deployment/service-discovery-service.yaml
+kubectl apply -f ./deployment/config-server-deployment.yaml
+kubectl apply -f ./deployment/config-server-service.yaml
+kubectl apply -f ./deployment/postgres-db1-deployment.yaml
+kubectl apply -f ./deployment/postgres-db1-service.yaml
+kubectl apply -f ./deployment/postgres-db2-deployment.yaml
+kubectl apply -f ./deployment/postgres-db2-service.yaml
+kubectl apply -f ./deployment/postgres-db3-deployment.yaml
+kubectl apply -f ./deployment/postgres-db3-service.yaml
+kubectl apply -f ./deployment/sushi-service-deployment.yaml
+kubectl apply -f ./deployment/sushi-service-service.yaml
+kubectl apply -f ./deployment/delivery-service-deployment.yaml
+kubectl apply -f ./deployment/delivery-service-service.yaml
+kubectl apply -f ./deployment/user-service-deployment.yaml
+kubectl apply -f ./deployment/user-service-service.yaml
+kubectl apply -f ./deployment/load-balancer-deployment.yaml
+kubectl apply -f ./deployment/load-balancer-service.yaml
+kubectl apply -f ./deployment/api-gateway-deployment.yaml
+kubectl apply -f ./deployment/api-gateway-service.yaml
+
+kubectl apply -f ./deployment
+
+-----------------------
+
+kubectl port-forward service/api-gateway 80:80
